@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Download ARS Flight Simulator 4.0 — a free flight simulator by After Redemption. Available for Windows and Android.">
+  <title>ARS Flight Simulator 4.0 | After Redemption</title>
+
+  <style>
+    :root {
+      --red: #e52535;
+      --red-dark: #a91020;
+      --bg: #101010;
+      --panel: #191919;
+      --panel-light: #222222;
+      --text: #f5f5f5;
+      --muted: #b6b6b6;
+      --border: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: min(1100px, 90%);
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(16, 16, 16, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .navbar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: var(--red);
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 0 20px #e5253530;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+
+    nav a {
+      color: #dddddd;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--red);
+    }
+
+    .menu-button {
+      display: none;
+      background: var(--panel-light);
+      color: white;
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 570px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 80% 40%, #8d152622, transparent 42%),
+        linear-gradient(135deg, #171717, #0d0d0d 65%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero::after {
+      content: "ARS";
+      position: absolute;
+      right: -20px;
+      bottom: -100px;
+      color: #ffffff05;
+      font-size: clamp(200px, 35vw, 440px);
+      line-height: 1;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 720px;
+      position: relative;
+      z-index: 1;
+      padding: 80px 0;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #e5253518;
+      border: 1px solid #e5253566;
+      border-radius: 30px;
+      color: #ff6470;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: var(--red);
+    }
+
+    .hero p {
+      max-width: 590px;
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      border: 1px solid transparent;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-secondary {
+      background: #ffffff08;
+      border-color: #ffffff35;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #ffffff15;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 38px;
+      max-width: 600px;
+    }
+
+    .stat {
+      border-left: 3px solid var(--red);
+      padding: 4px 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    section {
+      padding: 78px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 32px;
+    }
+
+    .section-heading .tag {
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    h2 {
+      font-size: clamp(29px, 4vw, 42px);
+      line-height: 1.2;
+      margin: 8px 0 12px;
+    }
+
+    .section-heading p {
+      max-width: 650px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: #e5253580;
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      background: #e525351b;
+      border-radius: 10px;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .downloads {
+      background: #151515;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .download-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 290px;
+    }
+
+    .download-card .btn {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .platform {
+      color: var(--red);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .download-card h3 {
+      font-size: 24px;
+    }
+
+    .download-card p {
+      margin: 10px 0 24px;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .fleet {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .plane {
+      background: linear-gradient(120deg, #202020, #151515);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .plane .plane-type {
+      color: var(--red);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .plane h3 {
+      margin: 7px 0;
+      font-size: 20px;
+    }
+
+    .plane p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .requirements {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .requirement-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .requirement-box h3 {
+      margin-bottom: 15px;
+    }
+
+    .requirement-box ul {
+      list-style: none;
+    }
+
+    .requirement-box li {
+      color: var(--muted);
+      padding: 9px 0;
+      border-bottom: 1px solid #ffffff0d;
+      font-size: 14px;
+    }
+
+    .requirement-box li:last-child {
+      border-bottom: none;
+    }
+
+    .requirement-box li::before {
+      content: "✓";
+      color: var(--red);
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 22px;
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    kbd {
+      background: #292929;
+      border: 1px solid #454545;
+      border-radius: 5px;
+      padding: 3px 8px;
+      color: #fff;
+      white-space: nowrap;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .about {
+      background: linear-gradient(135deg, #1a1011, #111111 70%);
+      border-top: 1px solid var(--border);
+    }
+
+    .about-content {
+      max-width: 760px;
+    }
+
+    .about-content p {
+      color: var(--muted);
+      margin: 14px 0;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      color: white;
+      font-weight: bold;
+    }
+
+    .footer-brand span {
+      color: var(--red);
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        padding: 18px 5%;
+        background: #151515;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav.open {
+        display: flex;
+      }
+
+      .menu-button {
+        display: block;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid,
+      .fleet,
+      .requirements,
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        gap: 8px;
+      }
+
+      .stat strong {
+        font-size: 18px;
+      }
+
+      .stat span {
+        font-size: 10px;
+      }
+
+      section {
+        padding: 55px 0;
+      }
+
+      .hero {
+        min-height: 500px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container navbar">
+      <a class="brand" href="#home" aria-label="ARS Flight Simulator home">
+        <div class="logo">A</div>
+        <div>
+          ARS FLIGHT SIM
+          <small>AFTER REDEMPTION</small>
+        </div>
+      </a>
+
+      <button class="menu-button" id="menuButton"
+        aria-expanded="false" aria-controls="navigation">
+        ☰ Menu
+      </button>
+
+      <nav id="navigation">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#fleet">Aircraft</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#requirements">Requirements</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div class="eyebrow">✈ VERSION 4.0 · FLIGHT SIMULATION</div>
+
+          <h1>YOUR SKY.<br><span>YOUR FLIGHT.</span></h1>
+
+          <p>
+            Take to the skies with ARS Flight Simulator 4.0.
+            Explore aircraft, fly between airports and experience
+            a growing world of aviation — developed by After Redemption.
+          </p>
+
+          <div class="buttons">
+            <a class="btn btn-primary"
+              href="https://drive.google.com/drive/folders/160pOnmgpHg68eAVKZvGaxkIxGCXPwlob?usp=drive_link"
+              target="_blank" rel="noopener noreferrer">
+              ↓ Download for Windows
+            </a>
+
+            <a class="btn btn-secondary"
+              href="https://drive.google.com/drive/folders/1MsUKe7OwHkr4wRsCy4RogRr0SymjZXn8?usp=drive_link"
+              target="_blank" rel="noopener noreferrer">
+              ↓ Get Android APK
+            </a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>12</strong>
+              <span>Aircraft in fleet</span>
+            </div>
+            <div class="stat">
+              <strong>2</strong>
+              <span>Platforms</span>
+            </div>
+            <div class="stat">
+              <strong>Free</strong>
+              <span>To download</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-heading">
+          <div class="tag">What's new</div>
+          <h2>Built for the skies.</h2>
+          <p>
+            Version 4.0 brings aircraft improvements, expanded scenery
+            technology and more ways to experience flight.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon">✈</div>
+            <h3>Enhanced Aircraft</h3>
+            <p>
+              Refined exterior models with improved wheels, engine details,
+              windows, doors, sensors and aerodynamic components.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🌍</div>
+            <h3>Expanded Terrain</h3>
+            <p>
+              Higher-detail terrain options, regional terrain packs and
+              optional online elevation streaming.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🌲</div>
+            <h3>Detailed Scenery</h3>
+            <p>
+              Instanced vegetation and procedural scenery designed to
+              bring more life to the world.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🎨</div>
+            <h3>ARS Airlines Livery</h3>
+            <p>
+              A white fuselage, charcoal tail, crimson crescent and
+              red cheatlines create the ARS Airlines look.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">🛬</div>
+            <h3>Flight Controls</h3>
+            <p>
+              Control pitch, roll, rudder, flaps, landing gear,
+              brakes and autopilot using keyboard shortcuts.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">💻</div>
+            <h3>Two Platforms</h3>
+            <p>
+              Download the Windows version or install the Android APK
+              on a compatible Android device.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fleet">
+      <div class="container">
+        <div class="section-heading">
+          <div class="tag">The fleet</div>
+          <h2>Meet the aircraft.</h2>
+          <p>
+            ARSFS 4.0 expands the aircraft collection to 12 aircraft.
+            Here are two featured additions.
+          </p>
+        </div>
+
+        <div class="fleet">
+          <article class="plane">
+            <div class="plane-type">Featured aircraft</div>
+            <h3>Boeing 737-800</h3>
+            <p>
+              A popular narrow-body passenger aircraft, added to the
+              ARSFS fleet in version 4.0.
+            </p>
+          </article>
+
+          <article class="plane">
+            <div class="plane-type">Featured aircraft</div>
+            <h3>Airbus A340-600</h3>
+            <p>
+              A long four-engine passenger aircraft, bringing a
+              long-haul option to the simulator.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="downloads" id="downloads">
+      <div class="container">
+        <div class="section-heading">
+          <div class="tag">Get the simulator</div>
+          <h2>Choose your platform.</h2>
+          <p>
+            Select your platform to open the corresponding ARSFS
+            download folder on Google Drive.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card download-card">
+            <div class="card-icon">🖥️</div>
+            <div class="platform">Desktop</div>
+            <h3>ARSFS for Windows</h3>
+            <p>
+              For compatible Windows 10 and Windows 11 64-bit PCs.
+              Check the requirements before downloading.
+            </p>
+            <a class="btn btn-primary"
+              href="https://drive.google.com/drive/folders/160pOnmgpHg68eAVKZvGaxkIxGCXPwlob?usp=drive_link"
+              target="_blank" rel="noopener noreferrer">
+              Open Windows Downloads ↗
+            </a>
+          </article>
+
+          <article class="card download-card">
+            <div class="card-icon">📱</div>
+            <div class="platform">Mobile</div>
+            <h3>ARSFS for Android</h3>
+            <p>
+              Get the Android APK. Install only the APK you trust,
+              and check that it comes from the official ARS release.
+            </p>
+            <a class="btn btn-primary"
+              href="https://drive.google.com/drive/folders/1MsUKe7OwHkr4wRsCy4RogRr0SymjZXn8?usp=drive_link"
+              target="_blank" rel="noopener noreferrer">
+              Open Android Downloads ↗
+            </a>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>Download note:</strong> These buttons open Google Drive
+          folders. Make sure the correct release files are uploaded and
+          that visitors have permission to access them.
+        </div>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <div class="container">
+        <div class="section-heading">
+          <div class="tag">Before you fly</div>
+          <h2>System requirements.</h2>
+          <p>
+            These are the currently listed requirements. Actual
+            performance can vary with aircraft, terrain and settings.
+          </p>
+        </div>
+
+        <div class="requirements">
+          <div class="requirement-box">
+            <h3>🖥️ Windows PC</h3>
+            <ul>
+              <li>Windows 10 or Windows 11, 64-bit</li>
+              <li>4 GB RAM minimum</li>
+              <li>8 GB RAM recommended</li>
+              <li>GPU supporting WebGL / compatible graphics</li>
+              <li>Approximately 250 MB storage</li>
+            </ul>
+          </div>
+
+          <div class="requirement-box">
+            <h3>📱 Android</h3>
+            <ul>
+              <li>Android 7.0 or newer</li>
+              <li>Compatible Android device</li>
+              <li>Approximately 50 MB storage</li>
+              <li>Performance varies by device</li>
+              <li>Allow APK installation only when appropriate</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="controls">
+      <div class="container">
+        <div class="section-heading">
+          <div class="tag">PC controls</div>
+          <h2>Ready for takeoff?</h2>
+          <p>
+            Keyboard controls listed for the Windows version.
+            Some controls may depend on the active aircraft or game mode.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="controls">
+            <div class="control-row">
+              <span>Pitch down / up</span>
+              <span><kbd>W</kbd> / <kbd>S</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Roll left / right</span>
+              <span><kbd>A</kbd> / <kbd>D</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Rudder / steering</span>
+              <span><kbd>Q</kbd> / <kbd>E</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Throttle</span>
+              <span><kbd>Shift</kbd> / <kbd>Ctrl</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Flaps</span>
+              <span><kbd>F</kbd> / <kbd>V</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Landing gear</span>
+              <span><kbd>G</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Brakes</span>
+              <span><kbd>B</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Speedbrakes</span>
+              <span><kbd>P</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Thrust reversers</span>
+              <span><kbd>R</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Camera</span>
+              <span><kbd>C</kbd> / <kbd>F9</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Autopilot / autothrottle</span>
+              <span><kbd>Z</kbd> / <kbd>X</kbd></span>
+            </div>
+
+            <div class="control-row">
+              <span>Map / checklist</span>
+              <span><kbd>M</kbd> / <kbd>K</kbd></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container">
+        <div class="about-content">
+          <div class="tag">About the project</div>
+          <h2>Created by After Redemption.</h2>
+          <p>
+            ARS Flight Simulator is an independent flight simulation
+            project developed under the After Redemption name.
+            The goal is to make aviation simulation accessible on
+            Windows and Android.
+          </p>
+          <p>
+            ARS Flight Simulator is an independent project and is not
+            an official Microsoft Flight Simulator, Airbus or Boeing
+            product.
+          </p>
+          <a class="btn btn-primary" href="#downloads">
+            Get ARS Flight Simulator
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span>ARS</span> FLIGHT SIMULATOR
+      </div>
+      <div>© <span id="year"></span> After Redemption Publish</div>
+      <div>Built for aviation fans.</div>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const navigation = document.getElementById("navigation");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navigation.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    navigation.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navigation.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
